@@ -3,6 +3,20 @@
   <mat-card-content>
     <form class="login-form data-form" #loginForm="ngForm" (ngSubmit)="onLogin(loginForm, $event)">
       <mat-form-field appearance="outline">
+        <!-- <input
+          ngModel
+          #email="ngModel"
+          matInput
+          type="email"
+          name="email"
+          placeholder="Email"
+          email
+          required
+          minlength="3"
+          maxLength="20"
+          [ngModelOptions]="{ standalone: true }"
+          (ngModelChange)="onEmailChange($event)"
+        /> -->
         <input
           ngModel
           #email="ngModel"
@@ -14,8 +28,6 @@
           required
           minlength="3"
           maxLength="20"
-          [ngModelOptions]="{updateOn: 'submit'}"
-          (ngModelChange)="onEmailChange($event)"
         />
         <mat-error *ngIf="email.errors?.required">The email is mandatory</mat-error>
         <mat-error *ngIf="email.errors?.minlength">
@@ -45,7 +57,7 @@
 
     <div class="form-val">
       <!-- {{ email.errors | json }} -->
-      {{ email.value | json }}
+      {{ loginForm.value | json }}
     </div>
   </mat-card-content>
 </mat-card>
