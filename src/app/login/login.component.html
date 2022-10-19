@@ -1,7 +1,7 @@
 <mat-card class="login-page">
   <mat-card-title>Login</mat-card-title>
   <mat-card-content>
-    <form class="login-form data-form" #loginForm="ngForm">
+    <form class="login-form data-form" #loginForm="ngForm" (ngSubmit)="onLogin(loginForm, $event)">
       <mat-form-field appearance="outline">
         <input
           ngModel
@@ -10,9 +10,20 @@
           type="email"
           name="email"
           placeholder="Email"
+          email
           required
+          minlength="3"
+          maxLength="20"
+          [ngModelOptions]="{updateOn: 'submit'}"
+          (ngModelChange)="onEmailChange($event)"
         />
         <mat-error *ngIf="email.errors?.required">The email is mandatory</mat-error>
+        <mat-error *ngIf="email.errors?.minlength">
+          Your email must have minimun
+          {{ email.errors.minlength.requiredLength }} chars, but is only has
+          {{ email.errors.minlength.actualLength }} chars
+        </mat-error>
+        <mat-error *ngIf="email.errors?.email">This is a not valid email</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -27,13 +38,14 @@
         />
       </mat-form-field>
 
-      <button (click)="onLogin(loginForm)" mat-raised-button color="primary">
+      <button [disabled]="loginForm.invalid" type="submit" mat-raised-button color="primary">
         Login
       </button>
     </form>
 
     <div class="form-val">
-      {{ email.errors | json }}
+      <!-- {{ email.errors | json }} -->
+      {{ email.value | json }}
     </div>
   </mat-card-content>
 </mat-card>
