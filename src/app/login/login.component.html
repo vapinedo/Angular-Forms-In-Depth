@@ -18,7 +18,7 @@
           (ngModelChange)="onEmailChange($event)"
         /> -->
         <input
-          ngModel
+          [ngModel]="val.email"
           #email="ngModel"
           matInput
           type="email"
@@ -40,7 +40,7 @@
 
       <mat-form-field appearance="outline">
         <input
-          ngModel
+          [ngModel]="val.password"
           #password="ngModel"
           matInput
           type="password"
@@ -57,6 +57,7 @@
 
     <div class="form-val">
       <!-- {{ email.errors | json }} -->
+      <!-- {{ email.valid | json }} -->
       {{ loginForm.value | json }}
     </div>
   </mat-card-content>

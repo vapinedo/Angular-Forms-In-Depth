@@ -7,6 +7,12 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./login.component.css"],
 })
 export class LoginComponent implements OnInit {
+
+  val = {
+    email: "valp@gmail.com",
+    password: "adminpass"
+  };
+
   constructor() {}
 
   ngOnInit() {}
@@ -14,6 +20,7 @@ export class LoginComponent implements OnInit {
   onLogin(form: NgForm, submit: any): void {
     console.log(form.value);
     console.log(form.valid);
+    console.log("val", this.val);
   }
   
 }
