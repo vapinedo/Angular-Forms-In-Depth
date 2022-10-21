@@ -51,14 +51,18 @@
           passwordStrength
         />
         <mat-error *ngIf="password.errors?.required">Password is required</mat-error>
-        <mat-error *ngIf="password.errors?.minlength">
-          Your password must have minimun
-          {{ password.errors.minlength.requiredLength }} chars, but is only has
-          {{ password.errors.minlength.actualLength }} chars
-        </mat-error>
-        <mat-error *ngIf="password.errors?.passwordStrength">
-          Your password must have lower case, upper case and numeric characters
-        </mat-error>
+        
+        <ng-container *ngIf="password.errors | onlyOneError:['minlength', 'passwordStrength'] as error">
+          <mat-error *ngIf="error?.minlength">
+            Your password must have minimun
+            {{ error.minlength.requiredLength }} chars, but is only has
+            {{ error.minlength.actualLength }} chars
+          </mat-error>
+
+          <mat-error *ngIf="error?.passwordStrength">
+            Your password must have lower case, upper case and numeric characters
+          </mat-error>
+        </ng-container>
       </mat-form-field>
 
       <button [disabled]="loginForm.invalid" type="submit" mat-raised-button color="primary">
