@@ -47,9 +47,15 @@
           name="password"
           placeholder="Password"
           required
+          minlength="8"
           passwordStrength
         />
         <mat-error *ngIf="password.errors?.required">Password is required</mat-error>
+        <mat-error *ngIf="password.errors?.minlength">
+          Your password must have minimun
+          {{ password.errors.minlength.requiredLength }} chars, but is only has
+          {{ password.errors.minlength.actualLength }} chars
+        </mat-error>
         <mat-error *ngIf="password.errors?.passwordStrength">
           Your password must have lower case, upper case and numeric characters
         </mat-error>
@@ -63,7 +69,8 @@
     <div class="form-val">
       <!-- {{ email.errors | json }} -->
       <!-- {{ email.valid | json }} -->
-      {{ loginForm.value | json }}
+      <!-- {{ loginForm.value | json }} -->
+      {{ password.errors | json }}
     </div>
   </mat-card-content>
 </mat-card>
