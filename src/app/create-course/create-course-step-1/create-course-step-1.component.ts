@@ -11,6 +11,16 @@ import {filter} from 'rxjs/operators';
 })
 export class CreateCourseStep1Component implements OnInit {
 
+  form = this.fb.group({
+    title: ["", [
+      Validators.required,
+      Validators.minLength(6),
+      Validators.maxLength(60)
+    ]]
+  });
+
+  constructor(private fb: FormBuilder) {}
+
   ngOnInit() {
 
   }
