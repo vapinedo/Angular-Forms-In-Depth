@@ -6,4 +6,14 @@
             This title is already been used
         </mat-error>
     </mat-form-field>
+
+    <mat-form-field>
+        <input matInput [matDatepicker]="releaseDatePicker" formControlName="releasedAt" placeholder="Release Date">
+        <mat-datepicker-toggle [for]="releaseDatePicker" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #releaseDatePicker></mat-datepicker>
+    </mat-form-field>
+</div>
+
+<div class="form-val">
+    {{ form.value | json }}
 </div>
