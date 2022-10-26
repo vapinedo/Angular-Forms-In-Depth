@@ -8,6 +8,14 @@
     </mat-form-field>
 
     <mat-form-field>
+        <mat-select placeholder="Select Category" formControlName="category">
+            <ng-container *ngFor="let category of (courseCategories$ | async)">
+                <mat-option [value]="category.code">{{category.description}}</mat-option>
+            </ng-container>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
         <input matInput [matDatepicker]="releaseDatePicker" formControlName="releasedAt" placeholder="Release Date">
         <mat-datepicker-toggle [for]="releaseDatePicker" matSuffix></mat-datepicker-toggle>
         <mat-datepicker #releaseDatePicker></mat-datepicker>
@@ -20,7 +28,6 @@
     <mat-form-field appearance="outline">
         <textarea matInput placeholder="Description" formControlName="longDescription"></textarea>
     </mat-form-field>
-    
 </div>
 
 <div class="form-val">
