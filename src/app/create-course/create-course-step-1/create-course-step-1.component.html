@@ -12,6 +12,15 @@
         <mat-datepicker-toggle [for]="releaseDatePicker" matSuffix></mat-datepicker-toggle>
         <mat-datepicker #releaseDatePicker></mat-datepicker>
     </mat-form-field>
+    
+    <mat-checkbox color="primary" formControlName="downloadsAllowed">
+        Downloads Allowed?
+    </mat-checkbox>
+    
+    <mat-form-field appearance="outline">
+        <textarea matInput placeholder="Description" formControlName="longDescription"></textarea>
+    </mat-form-field>
+    
 </div>
 
 <div class="form-val">
