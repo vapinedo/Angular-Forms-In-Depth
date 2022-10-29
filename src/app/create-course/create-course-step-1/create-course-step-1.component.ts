@@ -42,6 +42,19 @@ export class CreateCourseStep1Component implements OnInit {
 
   ngOnInit() {
     this.courseCategories$ = this.courses.findCourseCategories();
+
+    const draft = localStorage.getItem("STEP_1");  
+    if (draft) {
+      this.form.setValue(JSON.parse(draft));
+    }
+
+    this.form.valueChanges
+      .pipe(
+        filter(() => this.form.valid)
+      )
+      .subscribe(validValues => {
+        localStorage.setItem("STEP_1", JSON.stringify(validValues))
+      })       
   }
 
   get courseTitle() { return this.form.controls["title"]; }
