@@ -10,7 +10,7 @@ import {noop, of} from 'rxjs';
   templateUrl: "file-upload.component.html",
   styleUrls: ["file-upload.component.scss"]
 })
-export class FileUploadComponent {
+export class FileUploadComponent implements ControlValueAccessor {
 
   @Input()
   requiredFileType: string;
