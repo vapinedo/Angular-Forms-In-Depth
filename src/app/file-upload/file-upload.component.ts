@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {HttpClient, HttpEventType} from '@angular/common/http';
 import {catchError, finalize} from 'rxjs/operators';
-import {AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator} from '@angular/forms';
+import {AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator} from '@angular/forms';
 import {noop, of} from 'rxjs';
 
 
@@ -9,13 +9,20 @@ import {noop, of} from 'rxjs';
   selector: 'file-upload',
   templateUrl: "file-upload.component.html",
   styleUrls: ["file-upload.component.scss"],
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    multi: true,
-    useExisting: FileUploadComponent  
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: FileUploadComponent  
+    },
+    {
+      provide: NG_VALIDATORS,
+      multi: true,
+      useExisting: FileUploadComponent
+    }
+  ]
 })
-export class FileUploadComponent implements ControlValueAccessor {
+export class FileUploadComponent implements ControlValueAccessor, Validator {
 
   @Input()
   requiredFileType: string;
@@ -23,10 +30,12 @@ export class FileUploadComponent implements ControlValueAccessor {
   fileName = "";
   fileUploadError = false;
   uploadProgress: number | null;
+  fileUploadSuccess = false;
+  isDisabled: boolean = false;
 
   onChange = (fileName: string) => {};
   onTouched = function() {};
-  isDisabled: boolean = false;
+  onValidatorChange = function() {};
 
   constructor(private http: HttpClient) {}
 
@@ -59,8 +68,11 @@ export class FileUploadComponent implements ControlValueAccessor {
           if (event.type == HttpEventType.UploadProgress) {
             const progress = Math.round(100 * (event.loaded / event.total));
             this.uploadProgress = progress;
-          } else if (event.type == HttpEventType.Response) {
+          } 
+          else if (event.type == HttpEventType.Response) {
+            this.fileUploadSuccess = true;
             this.onChange(this.fileName);
+            this.onValidatorChange();
           }
         });
     }
@@ -80,6 +92,21 @@ export class FileUploadComponent implements ControlValueAccessor {
 
   setDisabledState(isDisabled: boolean): void {
     this.isDisabled = isDisabled;    
+  }
+
+  registerOnValidatorChange(onValidatorChange: () => void) {
+    this.onValidatorChange = onValidatorChange;
+  }
+
+  validate(control: AbstractControl): ValidationErrors | null {
+    if (this.fileUploadSuccess) { return null; }
+    let errors: any = {
+      requiredFileType: this.requiredFileType
+    };
+    if (this.fileUploadError) {
+      errors.uploadFailed = true;
+    }
+    return errors;
   }
 
 }
